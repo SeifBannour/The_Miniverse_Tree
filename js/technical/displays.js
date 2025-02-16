@@ -27,12 +27,12 @@ function constructNodeStyle(layer){
 
 function challengeStyle(layer, id) {
 	if (player[layer].activeChallenge == id && canCompleteChallenge(layer, id)) return "canComplete"
-	else if (hasChallenge(layer, id)) return "done"
+	else if (maxedChallenge(layer, id)) return "done"
     return "locked"
 }
 
 function challengeButtonText(layer, id) {
-    return (player[layer].activeChallenge==(id)?(canCompleteChallenge(layer, id)?"Finish":"Exit Early"):(hasChallenge(layer, id)?"Completed":"Start"))
+    return (player[layer].activeChallenge==(id)?(canCompleteChallenge(layer, id)?"Finish":"Exit Early"):(maxedChallenge(layer, id)?"Completed":"Start"))
 
 }
 
@@ -93,9 +93,9 @@ function constructBarStyle(layer, id) {
 		bar.progress = bar.progress.toNumber()
 	bar.progress = (1 -Math.min(Math.max(bar.progress, 0), 1)) * 100
 
-	style.dims = {'width': bar.width + "px", 'height': bar.height + "px"}
+	style.dims = {'width': bar.width + "%", 'height': bar.height + "px"}
 	let dir = bar.direction
-	style.fillDims = {'width': (bar.width + 0.5) + "px", 'height': (bar.height + 0.5)  + "px"}
+	style.fillDims = {'width': (bar.width + 0.5) + "%", 'height': (bar.height + 0.5)  + "px"}
 
 	switch(bar.direction) {
 		case UP:

@@ -319,10 +319,10 @@ function autobuyUpgrades(layer){
 }
 
 function gameLoop(diff) {
-	if (isEndgame() || tmp.gameEnded){
-		tmp.gameEnded = true
-		clearParticles()
-	}
+	// if (isEndgame() || tmp.gameEnded){
+	// 	tmp.gameEnded = true
+	// 	clearParticles()
+	// }
 
 	if (isNaN(diff) || diff < 0) diff = 0
 	if (tmp.gameEnded && !player.keepGoing) {
@@ -375,7 +375,7 @@ function gameLoop(diff) {
 			if (tmp[layer].autoUpgrade) autobuyUpgrades(layer)
 		}
 	}
-
+	
 	for (layer in layers){
 		if (layers[layer].milestones) updateMilestones(layer);
 		if (layers[layer].achievements) updateAchievements(layer)

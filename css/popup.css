@@ -16,7 +16,10 @@
 	position: absolute;
 	z-index: 9999999999999999999999999999999999;
 	right: 30px;
+	bottom: 30px;
 	width: 300px;
+
+	
 }
 
 .achievement-popup {
@@ -24,12 +27,13 @@
 }
 
 .milestone-popup {
-	background: #D1C23C;
+	background: #D1C23B;
 }
 
 .fade-enter-active, .fade-leave-active {
-	transition: opacity .3s
+	transition: opacity .3s;
 }
+
 
 .fade-transition {
 	transition: opacity .3s

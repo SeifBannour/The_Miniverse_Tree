@@ -134,21 +134,23 @@ function loadVue() {
 	})
 
 	// data = id
+	//<node-mark :layer='layer' :data='tmp[layer].challenges[data].marked' :offset="20" :scale="1.5"></node-mark></span>
+	//<hr style='width:250px; border-color:hsl(200 50% 50%)'><br>
 	Vue.component('challenge', {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].challenges && tmp[layer].challenges[data]!== undefined && tmp[layer].challenges[data].unlocked && !(options.hideChallenges && maxedChallenge(layer, [data]) && !inChallenge(layer, [data]))"
 			v-bind:class="['challenge', challengeStyle(layer, data), player[layer].activeChallenge === data ? 'resetNotify' : '']" v-bind:style="tmp[layer].challenges[data].style">
 			<br><h3 v-html="tmp[layer].challenges[data].name"></h3><br><br>
-			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button><br><br>
+			<button v-bind:class="{ challengeButton: true, can: false, [layer]: true }" v-bind:style="tmp[layer].challenges[data].buttonStyle" v-on:click="startChallenge(layer, data)">{{challengeButtonText(layer, data)}}</button><br><br>
 			<span v-if="layers[layer].challenges[data].fullDisplay" v-html="run(layers[layer].challenges[data].fullDisplay, layers[layer].challenges[data])"></span>
 			<span v-else>
 				<span v-html="tmp[layer].challenges[data].challengeDescription"></span><br>
-				Goal:  <span v-if="tmp[layer].challenges[data].goalDescription" v-html="tmp[layer].challenges[data].goalDescription"></span><span v-else>{{format(tmp[layer].challenges[data].goal)}} {{tmp[layer].challenges[data].currencyDisplayName ? tmp[layer].challenges[data].currencyDisplayName : modInfo.pointsName}}</span><br>
+				<span v-if="!maxedChallenge(layer, data)">Goal:  <span v-if="tmp[layer].challenges[data].goalDescription" v-html="tmp[layer].challenges[data].goalDescription"></span><span v-else>{{format(tmp[layer].challenges[data].goal)}} {{tmp[layer].challenges[data].currencyDisplayName ? tmp[layer].challenges[data].currencyDisplayName : modInfo.pointsName}}</span><br><br></span>
 				Reward: <span v-html="tmp[layer].challenges[data].rewardDescription"></span><br>
 				<span v-if="layers[layer].challenges[data].rewardDisplay!==undefined">Currently: <span v-html="(tmp[layer].challenges[data].rewardDisplay) ? (run(layers[layer].challenges[data].rewardDisplay, layers[layer].challenges[data])) : format(tmp[layer].challenges[data].rewardEffect)"></span></span>
 			</span>
-			<node-mark :layer='layer' :data='tmp[layer].challenges[data].marked' :offset="20" :scale="1.5"></node-mark></span>
+			
 
 		</div>
 		`
@@ -176,10 +178,11 @@ function loadVue() {
 			v-bind:style="[((!hasUpgrade(layer, data) && canAffordUpgrade(layer, data)) ? {'background-color': tmp[layer].color} : {}), tmp[layer].upgrades[data].style]">
 			<span v-if="layers[layer].upgrades[data].fullDisplay" v-html="run(layers[layer].upgrades[data].fullDisplay, layers[layer].upgrades[data])"></span>
 			<span v-else>
-				<span v-if= "tmp[layer].upgrades[data].title"><h3 v-html="tmp[layer].upgrades[data].title"></h3><br></span>
+				<span v-if= "tmp[layer].upgrades[data].title"><span v-html="tmp[layer].upgrades[data].title" style='font-size:13px'></span><br></span>
 				<span v-html="tmp[layer].upgrades[data].description"></span>
-				<span v-if="layers[layer].upgrades[data].effectDisplay"><br>Currently: <span v-html="run(layers[layer].upgrades[data].effectDisplay, layers[layer].upgrades[data])"></span></span>
-				<br><br>Cost: {{ formatWhole(tmp[layer].upgrades[data].cost) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)}}
+				<span v-if="layers[layer].upgrades[data].effectDisplay"><br><br>Currently: <span v-html="run(layers[layer].upgrades[data].effectDisplay, layers[layer].upgrades[data])"></span></span>
+				<br><br><span v-if="!hasUpgrade(layer, data)">Cost: {{ tmp[layer].upgrades[data].cost.gte(2) || tmp[layer].upgrades[data].cost.eq(0) ? formatWhole(tmp[layer].upgrades[data].cost) : commaFormat(tmp[layer].upgrades[data].cost , 5) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)}}</span>
+				<span v-else><span style="color:hsl(220 50% 90%);">Bought</span></span>
 			</span>
 			<tooltip v-if="tmp[layer].upgrades[data].tooltip" :text="tmp[layer].upgrades[data].tooltip"></tooltip>
 
@@ -192,7 +195,7 @@ function loadVue() {
 		template: `
 		<div v-if="tmp[layer].milestones">
 			<table>
-				<tr v-for="id in (data === undefined ? Object.keys(tmp[layer].milestones) : data)" v-if="tmp[layer].milestones[id]!== undefined && tmp[layer].milestones[id].unlocked && milestoneShown(layer, id)">
+				<tr v-for="id in (data === undefined ? Object.keys(tmp[layer].milestones).reverse() : data)" v-if="tmp[layer].milestones[id]!== undefined && tmp[layer].milestones[id].unlocked && milestoneShown(layer, id)">
 					<milestone :layer = "layer" :data = "id" v-bind:style="tmp[layer].componentStyles.milestone"></milestone>
 				</tr>
 			</table>
@@ -200,16 +203,17 @@ function loadVue() {
 		</div>
 		`
 	})
-
+	//<div class="milestone-id-box">{{ tmp[layer].milestones[data].id }}</div>
 	// data = id
 	Vue.component('milestone', {
 		props: ['layer', 'data'],
 		template: `
-		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data)}">
-			<h3 v-html="tmp[layer].milestones[data].requirementDescription"></h3><br>
-			<span v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><br>
+		<td v-if="tmp[layer].milestones && tmp[layer].milestones[data]!== undefined && milestoneShown(layer, data) && tmp[layer].milestones[data].unlocked" v-bind:style="[tmp[layer].milestones[data].style]" v-bind:class="{milestone: !hasMilestone(layer, data), tooltipBox: true, milestoneDone: hasMilestone(layer, data)}" style="max-width: 1000px;">
+			
+			<h3>Requires: </h3><h3 v-html="tmp[layer].milestones[data].requirementDescription"></h3> (<h3 v-html= "tmp[layer].milestones[data].id > 1000 ? tmp[layer].milestones[data].id - 1000 : tmp[layer].milestones[data].id"></h3>)<br>
+			<span>Reward: </span><span v-html="run(layers[layer].milestones[data].effectDescription, layers[layer].milestones[data])"></span><br>
 			<tooltip v-if="tmp[layer].milestones[data].tooltip" :text="tmp[layer].milestones[data].tooltip"></tooltip>
-
+			
 		<span v-if="(tmp[layer].milestones[data].toggles)&&(hasMilestone(layer, data))" v-for="toggle in tmp[layer].milestones[data].toggles"><toggle :layer= "layer" :data= "toggle" v-bind:style="tmp[layer].componentStyles.toggle"></toggle>&nbsp;</span></td></tr>
 		`
 	})
@@ -300,7 +304,7 @@ function loadVue() {
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-			  	this.time = 0
+					this.time = 0
 			}
 		},
 	})
@@ -361,7 +365,7 @@ function loadVue() {
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-			  	this.time = 0
+					this.time = 0
 			}
 		},
 	})
@@ -402,7 +406,7 @@ function loadVue() {
 			<span v-if= "layers[layer].grid.getTitle"><h3 v-html="gridRun(this.layer, 'getTitle', player[this.layer].grid[this.data], this.data)"></h3><br></span>
 			<span v-bind:style="{'white-space': 'pre-line'}" v-html="gridRun(this.layer, 'getDisplay', player[this.layer].grid[this.data], this.data)"></span>
 			<tooltip v-if="layers[layer].grid.getTooltip" :text="gridRun(this.layer, 'getTooltip', player[this.layer].grid[this.data], this.data)"></tooltip>
-
+			
 		</button>
 		`,
 		data() { return { interval: false, time: 0,}},
@@ -422,7 +426,7 @@ function loadVue() {
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-			  	this.time = 0
+					this.time = 0
 			}
 		},
 	})
@@ -434,7 +438,7 @@ function loadVue() {
 			currentTab() {return player.subtabs[layer][data]}
 		},
 		template: `
-		<div v-if="tmp[layer].microtabs" :style="{'border-style': 'solid'}">
+		<div v-if="tmp[layer].microtabs" :style="{'border-style': 'none'}">
 			<div class="upgTable instant">
 				<tab-buttons :layer="layer" :data="tmp[layer].microtabs[data]" :name="data" v-bind:style="tmp[layer].componentStyles['tab-buttons']"></tab-buttons>
 			</div>
@@ -453,14 +457,16 @@ function loadVue() {
 			style() {return constructBarStyle(this.layer, this.data)}
 		},
 		template: `
-		<div v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'relative'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
+		<div>
+		
+		<div v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'fixed','bottom':'1%','left':'0','right':'0'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
 			<div class = "overlayTextContainer barBorder" v-bind:style="[tmp[layer].bars[data].borderStyle, style.dims]">
-				<span class = "overlayText" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].textStyle]" v-html="run(layers[layer].bars[data].display, layers[layer].bars[data])"></span>
+			<span class = "overlayText" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].textStyle]" v-html="run(layers[layer].bars[data].display, layers[layer].bars[data])"></span>	
 			</div>
 			<div class ="barBG barBorder" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].baseStyle, tmp[layer].bars[data].borderStyle,  style.dims]">
 				<div class ="fill" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].fillStyle, style.fillDims]"></div>
 			</div>
-		</div></div>
+		</div></div></div>
 		`
 	})
 
@@ -471,7 +477,7 @@ function loadVue() {
 		<div v-if="tmp[layer].achievements" class="upgTable">
 			<div v-for="row in (data === undefined ? tmp[layer].achievements.rows : data)" class="upgRow">
 				<div v-for="col in tmp[layer].achievements.cols"><div v-if="tmp[layer].achievements[row*10+col]!== undefined && tmp[layer].achievements[row*10+col].unlocked" class="upgAlign">
-					<achievement :layer = "layer" :data = "row*10+col" v-bind:style="tmp[layer].componentStyles.achievement"></achievement>
+					<achievement :layer = "layer" :data = "row*10+col" v-bind:style="tmp[layer].componentStyles.achievement"></achievement><br>
 				</div></div>
 			</div>
 			<br>

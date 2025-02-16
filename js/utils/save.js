@@ -315,6 +315,16 @@ var saveInterval = setInterval(function () {
 		save();
 }, 5000);
 
+function layerText(elem, layer, text) {
+	return "<" + elem + " style='color:" + tmp[layer].color + ";text-shadow:0px 0px 10px;'>" + text + "</" + elem + ">"
+}
+
+function colorText(elem, color, text, shadow="") {
+	if(!shadow=="") return "<" + elem + " style='color:" + color + ";text-shadow:0px 0px 2px " + shadow + ", 2px 2px 0px " + shadow + ";'>" + text + "</" + elem + ">";
+
+	return "<" + elem + " style='color:" + color + ";text-shadow:0px 0px 5px ;'>" + text + "</" + elem + ">"
+}
+
 window.onbeforeunload = () => {
     if (player.autosave) {
         save();

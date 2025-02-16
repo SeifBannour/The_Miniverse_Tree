@@ -9,22 +9,115 @@
 }
 
 .tabButton {
+    
 	background-color: transparent;
 	color: var(--color);
-	font-size: 20px;
+	font-size: medium;
 	cursor: pointer;
-	padding: 5px 20px;
+	padding: 5px 30px;
 	margin: 5px;
-	border-radius: 10px;
+	border-radius: 4px; 
 	border: 2px solid;
 	color: var(--color);
-
+    box-shadow: var(--normal-box-shadow);
 }
 
 .tabButton:hover {
-	transform: scale(1.1, 1.1);
-	text-shadow: 0 0 7px var(--color);
+    transform: translate(2px, 2px);
+    box-shadow: var(--hover-box-shadow);
+    margin: 4px;
 }
+
+
+
+
+
+.gradient-text {
+    background: linear-gradient(45deg, #2c74ff, #87CEEB); /* Gradient */
+    background-size: 40% 40%;
+    background-clip: border-box;
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent so the gradient shows */
+    animation: gradientAnimation 2s ease infinite, shadowAnimations 3s ease-in-out infinite; /* Smoother easing */
+    filter: drop-shadow(1px 1px 1px #2c74ff); /* Initial shadow */
+}
+
+@keyframes shadowAnimation {
+    0% {
+        filter: drop-shadow(1px 1px 1px #2c74ff); 
+    }
+    25% {
+        filter: drop-shadow(2px 2px 1.5px #2c74ff); 
+    }
+    50% {
+        filter: drop-shadow(3px 3px 2px #2c74ff);
+    }
+    75% {
+        filter: drop-shadow(2px 2px 1.5px #2c74ff);
+    }
+    100% {
+        filter: drop-shadow(1px 1px 1px #2c74ff);
+    }
+}
+
+@keyframes shadowAnimations {
+    0% {
+        filter: drop-shadow(1px 1px 1px #2c74ff); 
+    }
+    50% {
+        filter: drop-shadow(3px 3px 2px #2c74ff);
+    }
+    100% {
+        filter: drop-shadow(1px 1px 1px #2c74ff);
+    }
+}
+
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.negative-gradient-text {
+    background: linear-gradient(315deg, #2c74ff, #1a3e8c, #87CEEB); /* Unique gradient flow */
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulseNegative 3s ease infinite, shadowPulse 2s ease-in-out infinite;
+    filter: drop-shadow(2px 2px 5px #030f29); 
+}
+
+@keyframes pulseNegative {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes shadowPulse {
+    0%, 100% {
+        filter: drop-shadow(2px 2px 2px #214dad);
+    }
+    50% {
+        filter: drop-shadow(2px 2px 5px #09516d); 
+    }
+}
+
+
+
 
 .tooltip { 
     pointer-events: none;
@@ -80,4 +173,20 @@
 
 .hl {
 	border-top: 3px solid var(--color);
+}
+
+
+*::-webkit-scrollbar {
+    width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: #0003;
+}
+
+*::-webkit-scrollbar-thumb {
+	border: solid 1px transparent;
+    background-color: #00000087;
+    border-radius: 4px;
 }

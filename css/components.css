@@ -1,75 +1,170 @@
 .upg {
 	min-height: 120px;
 	width: 120px;
-	border-radius: 25%;
-	border: 2px solid;
-	border-color: rgba(0, 0, 0, 0.125);
+	border-radius: 4%;
+	border: 1px solid;
+	border-color: rgba(194, 206, 235, 0.5);
+	box-shadow: inset 3px 3px 10px 0 rgba(0, 0, 0, 0.2), inset -3px -3px 10px 0 rgba(0, 0, 0, 0.13);
+	/*animation: border-color-shift 3s infinite;*/
 	font-size: 10px;
 	overflow: visible;
 }
 
+@keyframes border-color-shift {
+0% {
+	border-color: rgb(118, 118, 118);
+}
+50% {
+	border-color: rgb(255, 255, 255);
+}
+100% {
+	border-color: rgb(118, 118, 118);
+}
+}
+
 .achievement {
-	height: 90px;
-	width: 90px;
-	border-radius: 25%;
-	border: 2px solid;
+	height: 130px;
+	width: 130px;
+	border-radius: 10%;
+	border: 4px solid;
 	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
 	color: white;
-	text-shadow: 0 0 2px #000000;
+	
 }
 .achievement:hover {
-	box-shadow: 0 0 10px var(--points);
+	box-shadow: 0 0 5px var(--points);
+	transform: scale(1.1, 1.1);
 	z-index: 7;
 }
 
 .buyable {
 	height: 200px;
 	width: 200px;
-	border-radius: 25%;
+	border-radius: 4%;
 	border: 2px solid;
-	border-color: rgba(0, 0, 0, 0.125);
+	border-color: rgba(194, 206, 235, 0.3);
+	box-shadow: inset 3px 3px 10px 0 rgba(0, 0, 0, 0.2), inset -3px -3px 10px 0 rgba(0, 0, 0, 0.13);
 	font-size: 10px;
 	position:relative;
+	color: hsl(200, 8%, 7%);
 }
 
+
+
 .milestone {
-	width: 100%;
+	width: 200%;
 	min-width: 120px;
 	padding-left: 5px;
 	padding-right: 5px;
 	height: 75px;
 	background-color: #bf8f8f;
-	border: 4px solid;
+	border: 3px solid;
 	border-radius: 4px;
 	border-color: rgba(0, 0, 0, 0.125);
-	color: rgba(0, 0, 0, 0.5);
+	color: rgba(1, 1, 1, 0.733);
+	transition: transform 0.8s ease, box-shadow 0.8s ease;
 }
 
 .milestoneDone {
-	width: 100%;
+	width: 200%;
 	min-width: 120px;
 	padding-left: 5px;
-	padding-right: 5px;
-
+	padding-right: 5px;	
 	height: 75px;
 	background-color: #77bf5f;
-	border: 4px solid;
+	border: 3px solid;
 	border-radius: 4px;
 	border-color: rgba(0, 0, 0, 0.125);
-	color: rgba(0, 0, 0, 0.5);
+	color: rgba(1, 1, 1, 0.733);
+	transition: transform 0.8s ease, box-shadow 0.8s ease;
+}
+/*
+.milestone-id {
+	position: absolute;
+	top: 5px; 
+	right: 5px;
+	font-size: 1.3em; 
+	color: rgba(195, 219, 255, 0.6); 
+	font-weight: bold;
+}
+
+.milestone-id-box {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.3); 
+    color: rgba(0, 0, 0, 0.7); 
+    padding: 3px 8px; 
+    border-radius: 3px; 
+    font-weight: bold; 
+	font-size: 16px; 
+}
+*/
+
+.milestone-id-box {
+    position: absolute;
+    top: 5px;
+    right: -50px;
+    
+    color: rgba(0, 0, 0, 0.7); /* Subtle text color */
+    padding: 5px 12px; /* Adjust padding for a more balanced look */
+    border-radius: 6px; /* Rounded corners for a smoother look */
+    font-weight: bold; /* Emphasize the number */
+    font-size: 16px; /* Keep font size consistent when unlocked */
+    
+    /* Unique border with gradient */
+    border: 2px solid transparent;
+    
+
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    
+    /* Subtle shadow for depth */
+    box-shadow: 0 2px 6px rgba(10, 10, 220, 0.2);
+    
+    /* Optional animation for a glowing effect */
+    animation: glowAnimation 1.5s ease-in-out infinite alternate;
+
+	display: inline-block; /* Ensure the box behaves like text */
+    white-space: nowrap; /* Prevents wrapping the ID */
+}
+
+/* Animation to create a subtle glow effect */
+@keyframes glowAnimation {
+    0% {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(10, 10, 220, 0.7); /* Blue glow */
+    }
+    100% {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 0 15px rgba(10, 10, 220, 0.4); /* Slightly larger blue glow */
+    }
+}
+
+
+.milestone-done .milestone-id-box {
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle background change when unlocked */
+    color: rgba(255, 255, 255, 0.8); /* Light text for contrast when unlocked */
+}
+
+.milestoneDone:hover {
+	box-shadow: 0 0 5px rgba(83, 182, 207, 0.7); /* Adds a soft glow on hover */
+	transform: scale(1.07); /* Scales the milestone up by 5% */
+}
+
+.milestone:hover {
+	box-shadow: 0 0 5px rgba(83, 182, 207, 0.7); /* Adds a soft glow on hover */
 }
 
 .challenge {
-	background-color: #bf8f8f;
+	background-color: #bf8f8f; 
 	position: relative;
-	border: 4px solid;
+	border: 2px solid;
 	border-color: rgba(0, 0, 0, 0.125);
-	color: rgba(0, 0, 0, 0.5);
+	color: rgb(37, 37, 37);
 	width: 300px;
 	height: 300px;
 	font-size: 15px;
-	border-radius: 33.33%;
+	border-radius: 4%;
 }
 
 .challenge.done {
@@ -78,6 +173,21 @@
 
 .challenge.canComplete {
 	background-color: #ffbf00;
+}
+
+.challengeButton {
+	background-color: rgba(194, 206, 235, 0.801); 
+	height: 60px;
+	width: 200px; 
+	border-radius: 100%; 
+	border: transparent; 
+	box-shadow: 0em .4em 4px hsl(200 50% 0%);
+	font-size: large;
+}
+
+.challengeButton:hover {
+	transform: translate(0px, 2px);
+    box-shadow: 0px 0px 0px black;
 }
 
 /* Infoboxes */
@@ -125,17 +235,21 @@
 	height: 80px;
 	width: 80px;
 	border-radius: 15%;
-	border: 2px solid;
+	border: 4px solid;
 	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
 	overflow: visible;
+	
 }
 
 .tile.can:hover {
-	box-shadow: 0 0 10px var(--points);
-	transform: scale(1.1, 1.1);
+	/* box-shadow: 0 0 10px var(--points); */
+	transform: scale(1.2, 1.2);
 	z-index: 7;
 }
+
+
+
 
 .upgBig {
 	height: 200px;

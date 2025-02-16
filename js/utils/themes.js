@@ -1,5 +1,5 @@
 // ************ Themes ************
-var themes = ["default", "aqua"]
+var themes = ["default", "cozy"]
 
 var colors = {
 	default: {
@@ -9,10 +9,10 @@ var colors = {
 		color: "#dfdfdf",
 		points: "#ffffff",
 		locked: "#bf8f8f",
-		background: "#0f0f0f",
+		background: "linear-gradient(180deg, rgba(1,0,18,1) -50%, rgba(44,116,255,1) 300%)",
 		background_tooltip: "rgba(0, 0, 0, 0.75)",
 	},
-	aqua: {
+	cozy: {
 		1: "#bfdfff",
 		2: "#8fa7bf",
 		3: "#5f6f7f",
